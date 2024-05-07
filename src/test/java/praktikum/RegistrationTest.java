@@ -15,13 +15,14 @@ import static org.junit.Assert.assertEquals;
 
 public class RegistrationTest {
     private WebDriver driver;
+    private final String url = "https://stellarburgers.nomoreparties.site";
     public String name;
     public String email;
     public String password;
+    public String token;
 
 
     public WebDriver createDriver(String browser) {
-        System.setProperty("webdriver.chrome.driver", "/opt/homebrew/Caskroom/chromedriver/124.0.6367.91/chromedriver-mac-arm64");
         WebDriver webdriver = null;
 
         if (browser.equalsIgnoreCase("chrome")) {
@@ -42,12 +43,17 @@ public class RegistrationTest {
         name = "Ник";
         email = String.format("kurdin_nick%d@yandex.ru", rand.nextInt(1000));
         password = String.format("123456Nik%d", rand.nextInt(1000));
+        token = given()
+                .header("Content-type", "application/json")
+                .body("{\n\"email\": \"" + email + "\",\n\"password\": \"" + password + "\",\n\"name\": \"" + name + "\"\n}")
+                .post("/api/auth/register")
+                .then().extract().response().path("accessToken");
     }
 
     @Test
     public void checkSuccessfulRegistrationInChrome() {
         driver = createDriver("chrome");
-        driver.get("https://stellarburgers.nomoreparties.site");
+        driver.get(url);
         Registration registration = new Registration(driver);
         boolean actualResult = registration.createUser(name, email, password);
         assertEquals(false, actualResult);
@@ -56,7 +62,7 @@ public class RegistrationTest {
     @Test
     public void checkUnsuccessfulRegistrationInChrome() {
         driver = createDriver("chrome");
-        driver.get("https://stellarburgers.nomoreparties.site");
+        driver.get(url);
         Registration registration = new Registration(driver);
         boolean actualResult = registration.createUser(name, email, password);
         assertEquals(true, actualResult);
@@ -65,7 +71,7 @@ public class RegistrationTest {
     @Test
     public void checkSuccessfulRegistrationInYandex() {
         driver = createDriver("yandex");
-        driver.get("https://stellarburgers.nomoreparties.site");
+        driver.get(url);
         Registration registration = new Registration(driver);
         boolean actualResult = registration.createUser(name, email, password);
         assertEquals(false, actualResult);
@@ -74,7 +80,7 @@ public class RegistrationTest {
     @Test
     public void checkUnsuccessfulRegistrationInYandex() {
         driver = createDriver("yandex");
-        driver.get("https://stellarburgers.nomoreparties.site");
+        driver.get(url);
         Registration registration = new Registration(driver);
         boolean actualResult = registration.createUser(name, email, password);
         assertEquals(true, actualResult);
@@ -83,5 +89,8 @@ public class RegistrationTest {
     @After
     public void tearDown(){
         driver.quit();
+        given()
+                .header("Authorization", token)
+                .delete("/api/auth/user");
     }
 }

@@ -18,14 +18,45 @@ public class LoginAccount {
     By recoveryPasswordButton = By.xpath(".//a[text()='Восстановить пароль']");
     By emailRegistrationField = By.xpath(".//div[label[text() = 'Email']]/input[@name = 'name']");
     By passwordRegistrationField = By.xpath(".//div[label[text() = 'Пароль']]/input[@name = 'Пароль']");
+    By finalEnterAccountButton = By.xpath(".//button[text() = 'Войти']");
+    By headerAssembleBurger = By.xpath(".//h1[text() = 'Соберите бургер']");
 
-    public boolean loginEnterAccountButton(){}
+    public void moveToAuthorizationFormByEnterAccountButton(){
+        driver.findElement(enterAccountButton).click();
+    }
 
-    public boolean loginEnterPersonalAccountButton(){}
+    public void moveToRegistrationForm(){
+        driver.findElement(registerButton).click();
+    }
 
-    public boolean loginEnterInRegistrationForm(){}
+    public void moveToPersonalAccount(){
+        driver.findElement(enterPersonalAccountButton).click();
+    }
 
-    public boolean loginEnterInRecoveryPasswordForm(){}
+    public void loginFromRegistrationFormEnterButton(){
+        driver.findElement(enterInRegistrationForm).click();
+    }
 
+    public void fillAuthorizationForm(String email, String password){
+        driver.findElement(emailRegistrationField).sendKeys(email);
+        driver.findElement(passwordRegistrationField).sendKeys(password);
+    }
+
+    public boolean checkLogin(){
+        driver.findElement(finalEnterAccountButton).click();
+        return driver.findElement(headerAssembleBurger).isDisplayed();
+    }
+
+    public void finalClickToEnterAccount(){
+        driver.findElement(finalEnterAccountButton).click();
+    }
+
+    public void moveToRecoveryPasswordForm(){
+        driver.findElement(recoveryPasswordButton).click();
+    }
+
+    public void moveToAuthorizationFormFromRecoveryPasswordForm(){
+        driver.findElement(enterInRecoveryPasswordForm).click();
+    }
 
 }

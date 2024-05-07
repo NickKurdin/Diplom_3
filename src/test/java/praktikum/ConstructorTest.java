@@ -6,15 +6,17 @@ import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.opera.OperaDriver;
+import praktikum.pages.Constructor;
 import praktikum.pages.LoginAccount;
-import praktikum.pages.Registration;
+import praktikum.pages.PrivateAccount;
 
 import java.util.Random;
 
 import static io.restassured.RestAssured.given;
 import static org.junit.Assert.assertEquals;
 
-public class LoginAccountTest {
+public class ConstructorTest {
+
     private WebDriver driver;
     private final String url = "https://stellarburgers.nomoreparties.site";
     public String name;
@@ -52,100 +54,80 @@ public class LoginAccountTest {
     }
 
     @Test
-    public void checkLoginByEnterAccountButtonOnMainPageChrome() {
+    public void checkClickOnBunsChrome() {
         driver = createDriver("chrome");
         driver.get(url);
         LoginAccount loginAccount = new LoginAccount(driver);
         loginAccount.moveToAuthorizationFormByEnterAccountButton();
-        loginAccount.fillAuthorizationForm(email, password);
-        boolean actualResult = loginAccount.checkLogin();
+        loginAccount.fillAuthorizationForm(name, email);
+        loginAccount.finalClickToEnterAccount();
+        Constructor constructor = new Constructor(driver);
+        boolean actualResult = constructor.clickOnBuns();
         assertEquals(true, actualResult);
     }
 
     @Test
-    public void checkLoginByPersonalAccountButtonChrome() {
-        driver = createDriver("chrome");
-        driver.get(url);
-        LoginAccount loginAccount = new LoginAccount(driver);
-        loginAccount.moveToPersonalAccount();
-        loginAccount.fillAuthorizationForm(email, password);
-        boolean actualResult = loginAccount.checkLogin();
-        assertEquals(true, actualResult);
-    }
-
-    @Test
-    public void checkLoginByRegisterButtonChrome() {
-        driver = createDriver("chrome");
-        driver.get(url);
-        LoginAccount loginAccount = new LoginAccount(driver);
-        loginAccount.moveToPersonalAccount();
-        loginAccount.moveToRegistrationForm();
-        loginAccount.loginFromRegistrationFormEnterButton();
-        loginAccount.fillAuthorizationForm(email, password);
-        boolean actualResult = loginAccount.checkLogin();
-        assertEquals(true, actualResult);
-    }
-
-    @Test
-    public void checkLoginByRecoveryButtonChrome() {
+    public void checkClickOnSaucesChrome() {
         driver = createDriver("chrome");
         driver.get(url);
         LoginAccount loginAccount = new LoginAccount(driver);
         loginAccount.moveToAuthorizationFormByEnterAccountButton();
-        loginAccount.moveToRegistrationForm();
-        loginAccount.moveToRecoveryPasswordForm();
-        loginAccount.moveToAuthorizationFormFromRecoveryPasswordForm();
-        loginAccount.fillAuthorizationForm(email, password);
-        boolean actualResult = loginAccount.checkLogin();
+        loginAccount.fillAuthorizationForm(name, email);
+        loginAccount.finalClickToEnterAccount();
+        Constructor constructor = new Constructor(driver);
+        boolean actualResult = constructor.clickOnSauces();
         assertEquals(true, actualResult);
     }
 
     @Test
-    public void checkLoginByEnterAccountButtonOnMainPageYandex() {
+    public void checkClickOnFillingsChrome() {
+        driver = createDriver("chrome");
+        driver.get(url);
+        LoginAccount loginAccount = new LoginAccount(driver);
+        loginAccount.moveToAuthorizationFormByEnterAccountButton();
+        loginAccount.fillAuthorizationForm(name, email);
+        loginAccount.finalClickToEnterAccount();
+        Constructor constructor = new Constructor(driver);
+        boolean actualResult = constructor.clickOnFillings();
+        assertEquals(true, actualResult);
+    }
+
+    @Test
+    public void checkClickOnBunsYandex() {
         driver = createDriver("yandex");
         driver.get(url);
         LoginAccount loginAccount = new LoginAccount(driver);
         loginAccount.moveToAuthorizationFormByEnterAccountButton();
-        loginAccount.fillAuthorizationForm(email, password);
-        boolean actualResult = loginAccount.checkLogin();
+        loginAccount.fillAuthorizationForm(name, email);
+        loginAccount.finalClickToEnterAccount();
+        Constructor constructor = new Constructor(driver);
+        boolean actualResult = constructor.clickOnBuns();
         assertEquals(true, actualResult);
     }
 
     @Test
-    public void checkLoginByPersonalAccountButtonYandex() {
-        driver = createDriver("yandex");
-        driver.get(url);
-        LoginAccount loginAccount = new LoginAccount(driver);
-        loginAccount.moveToPersonalAccount();
-        loginAccount.fillAuthorizationForm(email, password);
-        boolean actualResult = loginAccount.checkLogin();
-        assertEquals(true, actualResult);
-    }
-
-    @Test
-    public void checkLoginByRegisterButtonYandex() {
-        driver = createDriver("yandex");
-        driver.get(url);
-        LoginAccount loginAccount = new LoginAccount(driver);
-        loginAccount.moveToPersonalAccount();
-        loginAccount.moveToRegistrationForm();
-        loginAccount.loginFromRegistrationFormEnterButton();
-        loginAccount.fillAuthorizationForm(email, password);
-        boolean actualResult = loginAccount.checkLogin();
-        assertEquals(true, actualResult);
-    }
-
-    @Test
-    public void checkLoginByRecoveryButtonYandex() {
+    public void checkClickOnSaucesYandex() {
         driver = createDriver("yandex");
         driver.get(url);
         LoginAccount loginAccount = new LoginAccount(driver);
         loginAccount.moveToAuthorizationFormByEnterAccountButton();
-        loginAccount.moveToRegistrationForm();
-        loginAccount.moveToRecoveryPasswordForm();
-        loginAccount.moveToAuthorizationFormFromRecoveryPasswordForm();
-        loginAccount.fillAuthorizationForm(email, password);
-        boolean actualResult = loginAccount.checkLogin();
+        loginAccount.fillAuthorizationForm(name, email);
+        loginAccount.finalClickToEnterAccount();
+        Constructor constructor = new Constructor(driver);
+        boolean actualResult = constructor.clickOnSauces();
+        assertEquals(true, actualResult);
+    }
+
+    @Test
+    public void checkClickOnFillingsYandex() {
+        driver = createDriver("yandex");
+        driver.get(url);
+        LoginAccount loginAccount = new LoginAccount(driver);
+        loginAccount.moveToAuthorizationFormByEnterAccountButton();
+        loginAccount.fillAuthorizationForm(name, email);
+        loginAccount.finalClickToEnterAccount();
+        Constructor constructor = new Constructor(driver);
+        boolean actualResult = constructor.clickOnFillings();
         assertEquals(true, actualResult);
     }
 

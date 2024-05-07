@@ -27,4 +27,5 @@ public class Registration {
         driver.findElement(finalRegistrationButton).click();
         return driver.findElement(registrationError).isDisplayed();
     }
+
 }
