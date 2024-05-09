@@ -1,16 +1,14 @@
 package praktikum;
 
+import io.qameta.allure.junit4.DisplayName;
+import io.restassured.RestAssured;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.opera.OperaDriver;
 import praktikum.pages.Registration;
 
-import java.util.Random;
-
-import static io.restassured.RestAssured.given;
 import static org.junit.Assert.assertEquals;
 
 public class RegistrationTest {
@@ -19,6 +17,7 @@ public class RegistrationTest {
     public String name;
     public String email;
     public String password;
+    public String incorrectPassword;
     public String token;
 
 
@@ -29,8 +28,9 @@ public class RegistrationTest {
             // Создаем экземпляр ChromeDriver
             webdriver = new ChromeDriver();
         } else if (browser.equalsIgnoreCase("yandex")) {
-            // Создаем экземпляр FirefoxDriver
-            webdriver = new OperaDriver();
+            // Создаем экземпляр YandexDriver
+            System.setProperty("webdriver.chrome.driver", "C:\\Users\\nickex\\WebDriver\\bin\\yandexdriver.exe");
+            webdriver = new ChromeDriver();
         } else {
             System.out.println("Неподдерживаемый браузер: " + browser);
         }
@@ -39,58 +39,58 @@ public class RegistrationTest {
 
     @Before
     public void initialization() {
-        Random rand = new Random();
         name = "Ник";
-        email = String.format("kurdin_nick%d@yandex.ru", rand.nextInt(1000));
-        password = String.format("123456Nik%d", rand.nextInt(1000));
-        token = given()
-                .header("Content-type", "application/json")
-                .body("{\n\"email\": \"" + email + "\",\n\"password\": \"" + password + "\",\n\"name\": \"" + name + "\"\n}")
-                .post("/api/auth/register")
-                .then().extract().response().path("accessToken");
+        email = "burdin_nickita@yandex.ru";
+        password = "burdin_nickita";
+        incorrectPassword = "bur";;
     }
 
     @Test
+    @DisplayName("Успешная регистрация в Google Chrome")
     public void checkSuccessfulRegistrationInChrome() {
-        driver = createDriver("chrome");
-        driver.get(url);
-        Registration registration = new Registration(driver);
-        boolean actualResult = registration.createUser(name, email, password);
-        assertEquals(false, actualResult);
-    }
-
-    @Test
-    public void checkUnsuccessfulRegistrationInChrome() {
-        driver = createDriver("chrome");
-        driver.get(url);
         Registration registration = new Registration(driver);
         boolean actualResult = registration.createUser(name, email, password);
         assertEquals(true, actualResult);
     }
 
     @Test
+    @DisplayName("Ошибочная регистрация в Google Chrome")
+    public void checkUnsuccessfulRegistrationInChrome() {
+        driver = createDriver("chrome");
+        driver.get(url);
+        Registration registration = new Registration(driver);
+        boolean actualResult = registration.createUser(name, email, incorrectPassword);
+        assertEquals(false, actualResult);
+    }
+
+    @Test
+    @DisplayName("Успешная регистрация в Yandex Browser")
     public void checkSuccessfulRegistrationInYandex() {
         driver = createDriver("yandex");
         driver.get(url);
         Registration registration = new Registration(driver);
         boolean actualResult = registration.createUser(name, email, password);
-        assertEquals(false, actualResult);
+        assertEquals(true, actualResult);
     }
 
     @Test
+    @DisplayName("Ошибочная регистрация в Yandex Browser")
     public void checkUnsuccessfulRegistrationInYandex() {
         driver = createDriver("yandex");
         driver.get(url);
         Registration registration = new Registration(driver);
-        boolean actualResult = registration.createUser(name, email, password);
-        assertEquals(true, actualResult);
+        boolean actualResult = registration.createUser(name, email, incorrectPassword);
+        assertEquals(false, actualResult);
     }
 
     @After
     public void tearDown(){
         driver.quit();
-        given()
-                .header("Authorization", token)
-                .delete("/api/auth/user");
+        RestAssured.baseURI = url;
+        API request = new API();
+        token = request.loginUser(email, password);
+        if(token != null) {
+            request.deleteUser(token);
+        }
     }
 }

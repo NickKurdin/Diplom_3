@@ -1,17 +1,13 @@
 package praktikum;
 
+import io.qameta.allure.junit4.DisplayName;
+import io.restassured.RestAssured;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.opera.OperaDriver;
 import praktikum.pages.LoginAccount;
-import praktikum.pages.Registration;
-
-import java.util.Random;
-
-import static io.restassured.RestAssured.given;
 import static org.junit.Assert.assertEquals;
 
 public class LoginAccountTest {
@@ -30,8 +26,9 @@ public class LoginAccountTest {
             // Создаем экземпляр ChromeDriver
             webdriver = new ChromeDriver();
         } else if (browser.equalsIgnoreCase("yandex")) {
-            // Создаем экземпляр FirefoxDriver
-            webdriver = new OperaDriver();
+            // Создаем экземпляр YandexDriver
+            System.setProperty("webdriver.chrome.driver", "C:\\Users\\nickex\\WebDriver\\bin\\yandexdriver.exe");
+            webdriver = new ChromeDriver();
         } else {
             System.out.println("Неподдерживаемый браузер: " + browser);
         }
@@ -40,120 +37,102 @@ public class LoginAccountTest {
 
     @Before
     public void initialization() {
-        Random rand = new Random();
         name = "Ник";
-        email = String.format("kurdin_nick%d@yandex.ru", rand.nextInt(1000));
-        password = String.format("123456Nik%d", rand.nextInt(1000));
-        token = given()
-                .header("Content-type", "application/json")
-                .body("{\n\"email\": \"" + email + "\",\n\"password\": \"" + password + "\",\n\"name\": \"" + name + "\"\n}")
-                .post("/api/auth/register")
-                .then().extract().response().path("accessToken");
+        email = "burdin_nickita@yandex.ru";
+        password = "burdin_nickita";
+        RestAssured.baseURI = url;
+        API request = new API();
+        token = request.createUser(email, password, name);
     }
 
     @Test
+    @DisplayName("Авторизация через кнопку \"Войти в аккаунт\" в Google Chrome")
     public void checkLoginByEnterAccountButtonOnMainPageChrome() {
         driver = createDriver("chrome");
         driver.get(url);
         LoginAccount loginAccount = new LoginAccount(driver);
-        loginAccount.moveToAuthorizationFormByEnterAccountButton();
-        loginAccount.fillAuthorizationForm(email, password);
-        boolean actualResult = loginAccount.checkLogin();
+        boolean actualResult = loginAccount.loginByEnterAccountButtonOnMainPage(email, password);
         assertEquals(true, actualResult);
     }
 
     @Test
+    @DisplayName("Авторизация через кнопку \"Личный кабинет\" в Google Chrome")
     public void checkLoginByPersonalAccountButtonChrome() {
         driver = createDriver("chrome");
         driver.get(url);
         LoginAccount loginAccount = new LoginAccount(driver);
-        loginAccount.moveToPersonalAccount();
-        loginAccount.fillAuthorizationForm(email, password);
-        boolean actualResult = loginAccount.checkLogin();
+        boolean actualResult = loginAccount.loginByPersonalAccountButton(email, password);
         assertEquals(true, actualResult);
     }
 
     @Test
+    @DisplayName("Авторизация через кнопку \"Зарегистрироваться\" в Google Chrome")
     public void checkLoginByRegisterButtonChrome() {
         driver = createDriver("chrome");
         driver.get(url);
         LoginAccount loginAccount = new LoginAccount(driver);
-        loginAccount.moveToPersonalAccount();
-        loginAccount.moveToRegistrationForm();
-        loginAccount.loginFromRegistrationFormEnterButton();
-        loginAccount.fillAuthorizationForm(email, password);
-        boolean actualResult = loginAccount.checkLogin();
+        boolean actualResult = loginAccount.loginByRegisterButton(email, password);
         assertEquals(true, actualResult);
     }
 
     @Test
+    @DisplayName("Авторизация через кнопку \"Восстановить пароль\" в Google Chrome")
     public void checkLoginByRecoveryButtonChrome() {
         driver = createDriver("chrome");
         driver.get(url);
         LoginAccount loginAccount = new LoginAccount(driver);
-        loginAccount.moveToAuthorizationFormByEnterAccountButton();
-        loginAccount.moveToRegistrationForm();
-        loginAccount.moveToRecoveryPasswordForm();
-        loginAccount.moveToAuthorizationFormFromRecoveryPasswordForm();
-        loginAccount.fillAuthorizationForm(email, password);
-        boolean actualResult = loginAccount.checkLogin();
+        boolean actualResult = loginAccount.loginByRecoveryButton(email, password);
         assertEquals(true, actualResult);
     }
 
     @Test
+    @DisplayName("Авторизация через кнопку \"Войти в аккаунт\" в Google Chrome")
     public void checkLoginByEnterAccountButtonOnMainPageYandex() {
         driver = createDriver("yandex");
         driver.get(url);
         LoginAccount loginAccount = new LoginAccount(driver);
-        loginAccount.moveToAuthorizationFormByEnterAccountButton();
-        loginAccount.fillAuthorizationForm(email, password);
-        boolean actualResult = loginAccount.checkLogin();
+        boolean actualResult = loginAccount.loginByEnterAccountButtonOnMainPage(email, password);
         assertEquals(true, actualResult);
     }
 
     @Test
+    @DisplayName("Авторизация через кнопку \"Личный кабинет\" в Yandex Browser")
     public void checkLoginByPersonalAccountButtonYandex() {
         driver = createDriver("yandex");
         driver.get(url);
         LoginAccount loginAccount = new LoginAccount(driver);
-        loginAccount.moveToPersonalAccount();
-        loginAccount.fillAuthorizationForm(email, password);
-        boolean actualResult = loginAccount.checkLogin();
+        boolean actualResult = loginAccount.loginByPersonalAccountButton(email, password);
         assertEquals(true, actualResult);
     }
 
     @Test
+    @DisplayName("Авторизация через кнопку \"Зарегистрироваться\" в Yandex Browser")
     public void checkLoginByRegisterButtonYandex() {
         driver = createDriver("yandex");
         driver.get(url);
         LoginAccount loginAccount = new LoginAccount(driver);
-        loginAccount.moveToPersonalAccount();
-        loginAccount.moveToRegistrationForm();
-        loginAccount.loginFromRegistrationFormEnterButton();
-        loginAccount.fillAuthorizationForm(email, password);
-        boolean actualResult = loginAccount.checkLogin();
+        boolean actualResult = loginAccount.loginByRegisterButton(email, password);
         assertEquals(true, actualResult);
     }
 
     @Test
+    @DisplayName("Авторизация через кнопку \"Восстановить пароль\" в Yandex Browser")
     public void checkLoginByRecoveryButtonYandex() {
         driver = createDriver("yandex");
         driver.get(url);
         LoginAccount loginAccount = new LoginAccount(driver);
-        loginAccount.moveToAuthorizationFormByEnterAccountButton();
-        loginAccount.moveToRegistrationForm();
-        loginAccount.moveToRecoveryPasswordForm();
-        loginAccount.moveToAuthorizationFormFromRecoveryPasswordForm();
-        loginAccount.fillAuthorizationForm(email, password);
-        boolean actualResult = loginAccount.checkLogin();
+        boolean actualResult = loginAccount.loginByRecoveryButton(email, password);
         assertEquals(true, actualResult);
     }
 
     @After
-    public void tearDown(){
+    public void tearDown() {
         driver.quit();
-        given()
-                .header("Authorization", token)
-                .delete("/api/auth/user");
+        RestAssured.baseURI = url;
+        API request = new API();
+        token = request.loginUser(email, password);
+        if(token != null) {
+            request.deleteUser(token);
+        }
     }
 }

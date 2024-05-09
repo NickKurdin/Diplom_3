@@ -1,10 +1,14 @@
 package praktikum.pages;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class PrivateAccount {
     private final WebDriver driver;
+    public LoginAccount loginAccount;
 
     public PrivateAccount(WebDriver browser){
         driver = browser;
@@ -19,8 +23,12 @@ public class PrivateAccount {
     By headerEnter = By.xpath(".//h2[text()='Вход']");
 
     public boolean checkMoveToPersonalAccountByClick(){
-        driver.findElement(enterPersonalAccountButton).click();
-        return driver.findElement(headerProfile).isDisplayed();
+        new WebDriverWait(driver, 3)
+                    .until(ExpectedConditions.presenceOfElementLocated(headerAssembleBurger));
+        moveToPersonalAccountByClick();
+        new WebDriverWait(driver, 3)
+                .until(ExpectedConditions.presenceOfElementLocated(headerProfile));
+        return true;
     }
 
     public void moveToPersonalAccountByClick(){

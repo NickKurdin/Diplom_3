@@ -1,7 +1,10 @@
 package praktikum.pages;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.*;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebElement;
 
 public class LoginAccount {
     private final WebDriver driver;
@@ -44,7 +47,14 @@ public class LoginAccount {
 
     public boolean checkLogin(){
         driver.findElement(finalEnterAccountButton).click();
-        return driver.findElement(headerAssembleBurger).isDisplayed();
+        try{
+            new WebDriverWait(driver, 3)
+                    .until(ExpectedConditions.presenceOfElementLocated(headerAssembleBurger));
+        }
+        catch(TimeoutException exception) {
+            return false;
+        }
+        return true;
     }
 
     public void finalClickToEnterAccount(){
@@ -52,11 +62,42 @@ public class LoginAccount {
     }
 
     public void moveToRecoveryPasswordForm(){
+        WebElement element = driver.findElement(recoveryPasswordButton);
+        ((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView();", element);
         driver.findElement(recoveryPasswordButton).click();
     }
 
     public void moveToAuthorizationFormFromRecoveryPasswordForm(){
         driver.findElement(enterInRecoveryPasswordForm).click();
     }
+
+    public boolean loginByEnterAccountButtonOnMainPage(String email, String password){
+        moveToAuthorizationFormByEnterAccountButton();
+        fillAuthorizationForm(email, password);
+        return checkLogin();
+    }
+
+    public boolean loginByPersonalAccountButton(String email, String password){
+        moveToPersonalAccount();
+        fillAuthorizationForm(email, password);
+        return checkLogin();
+    }
+
+    public boolean loginByRegisterButton(String email, String password){
+        moveToPersonalAccount();
+        moveToRegistrationForm();
+        loginFromRegistrationFormEnterButton();
+        fillAuthorizationForm(email, password);
+        return checkLogin();
+    }
+
+    public boolean loginByRecoveryButton(String email, String password){
+        moveToAuthorizationFormByEnterAccountButton();
+        moveToRecoveryPasswordForm();
+        moveToAuthorizationFormFromRecoveryPasswordForm();
+        fillAuthorizationForm(email, password);
+        return checkLogin();
+    }
+
 
 }
