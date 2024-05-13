@@ -13,13 +13,13 @@ public class Registration {
         driver = browser;
     }
 
-    By enterAccountButton = By.xpath(".//button[text()='Войти в аккаунт']");
-    By registerButton = By.xpath(".//a[text()='Зарегистрироваться']");
-    By nameRegistrationField = By.xpath(".//div[label[text() = 'Имя']]/input[@name = 'name']");
-    By emailRegistrationField = By.xpath(".//div[label[text() = 'Email']]/input[@name = 'name']");
-    By passwordRegistrationField = By.xpath(".//div[label[text() = 'Пароль']]/input[@name = 'Пароль']");
-    By finalRegistrationButton = By.xpath(".//button[@class='button_button__33qZ0 button_button_type_primary__1O7Bx button_button_size_medium__3zxIa']");
-    By headerEnter = By.xpath(".//h2[text()='Вход']");
+    private final By enterAccountButton = By.xpath(".//button[text()='Войти в аккаунт']");
+    private final By registerButton = By.xpath(".//a[text()='Зарегистрироваться']");
+    private final By nameRegistrationField = By.xpath(".//div[label[text() = 'Имя']]/input[@name = 'name']");
+    private final By emailRegistrationField = By.xpath(".//div[label[text() = 'Email']]/input[@name = 'name']");
+    private final By passwordRegistrationField = By.xpath(".//div[label[text() = 'Пароль']]/input[@name = 'Пароль']");
+    private final By finalRegistrationButton = By.xpath(".//button[@class='button_button__33qZ0 button_button_type_primary__1O7Bx button_button_size_medium__3zxIa']");
+    private final By headerEnter = By.xpath(".//h2[text()='Вход']");
 
     public boolean createUser(String name, String email, String password){
         driver.findElement(enterAccountButton).click();

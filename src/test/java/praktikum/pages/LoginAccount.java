@@ -13,16 +13,16 @@ public class LoginAccount {
         driver = browser;
     }
 
-    By enterAccountButton = By.xpath(".//button[text()='Войти в аккаунт']");
-    By enterPersonalAccountButton = By.xpath(".//p[text()='Личный Кабинет']");
-    By enterInRegistrationForm = By.xpath(".//a[text()='Войти']");
-    By enterInRecoveryPasswordForm = By.xpath(".//p[text()='Вспомнили пароль?']/a[text()='Войти']");
-    By registerButton = By.xpath(".//a[text()='Зарегистрироваться']");
-    By recoveryPasswordButton = By.xpath(".//a[text()='Восстановить пароль']");
-    By emailRegistrationField = By.xpath(".//div[label[text() = 'Email']]/input[@name = 'name']");
-    By passwordRegistrationField = By.xpath(".//div[label[text() = 'Пароль']]/input[@name = 'Пароль']");
-    By finalEnterAccountButton = By.xpath(".//button[text() = 'Войти']");
-    By headerAssembleBurger = By.xpath(".//h1[text() = 'Соберите бургер']");
+    private final By enterAccountButton = By.xpath(".//button[text()='Войти в аккаунт']");
+    private final By enterPersonalAccountButton = By.xpath(".//p[text()='Личный Кабинет']");
+    private final By enterInRegistrationForm = By.xpath(".//a[text()='Войти']");
+    private final By enterInRecoveryPasswordForm = By.xpath(".//p[text()='Вспомнили пароль?']/a[text()='Войти']");
+    private final By registerButton = By.xpath(".//a[text()='Зарегистрироваться']");
+    private final By recoveryPasswordButton = By.xpath(".//a[text()='Восстановить пароль']");
+    private final By emailRegistrationField = By.xpath(".//div[label[text() = 'Email']]/input[@name = 'name']");
+    private final By passwordRegistrationField = By.xpath(".//div[label[text() = 'Пароль']]/input[@name = 'Пароль']");
+    private final By finalEnterAccountButton = By.xpath(".//button[text() = 'Войти']");
+    private final By headerAssembleBurger = By.xpath(".//h1[text() = 'Соберите бургер']");
 
     public void moveToAuthorizationFormByEnterAccountButton(){
         driver.findElement(enterAccountButton).click();
@@ -58,6 +58,8 @@ public class LoginAccount {
     }
 
     public void finalClickToEnterAccount(){
+        WebElement element = driver.findElement(finalEnterAccountButton);
+        ((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView();", element);
         driver.findElement(finalEnterAccountButton).click();
     }
 
