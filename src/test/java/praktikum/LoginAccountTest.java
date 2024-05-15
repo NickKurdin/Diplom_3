@@ -10,7 +10,6 @@ import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import praktikum.api.API;
 import praktikum.pages.LoginAccount;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class LoginAccountTest {
@@ -20,23 +19,6 @@ public class LoginAccountTest {
     private String email;
     private String password;
     private String token;
-
-
-    /*public WebDriver createDriver(String browser) {
-        WebDriver webdriver = null;
-
-        if (browser.equalsIgnoreCase("chrome")) {
-            // Создаем экземпляр ChromeDriver
-            webdriver = new ChromeDriver();
-        } else if (browser.equalsIgnoreCase("yandex")) {
-            // Создаем экземпляр YandexDriver
-            System.setProperty("webdriver.chrome.driver", "src\\test\\resourses\\yandexdriver.exe");
-            webdriver = new ChromeDriver();
-        } else {
-            System.out.println("Неподдерживаемый браузер: " + browser);
-        }
-        return webdriver;
-    }*/
 
     @Before
     public void initialization() {
@@ -86,46 +68,6 @@ public class LoginAccountTest {
         boolean actualResult = loginAccount.loginByRecoveryButton(email, password);
         assertTrue(actualResult);
     }
-
-    /*@Test
-    @DisplayName("Авторизация через кнопку \"Войти в аккаунт\" в Google Chrome")
-    public void checkLoginByEnterAccountButtonOnMainPageYandex() {
-        driver = createDriver("yandex");
-        driver.get(url);
-        LoginAccount loginAccount = new LoginAccount(driver);
-        boolean actualResult = loginAccount.loginByEnterAccountButtonOnMainPage(email, password);
-        assertEquals(true, actualResult);
-    }
-
-    @Test
-    @DisplayName("Авторизация через кнопку \"Личный кабинет\" в Yandex Browser")
-    public void checkLoginByPersonalAccountButtonYandex() {
-        driver = createDriver("yandex");
-        driver.get(url);
-        LoginAccount loginAccount = new LoginAccount(driver);
-        boolean actualResult = loginAccount.loginByPersonalAccountButton(email, password);
-        assertEquals(true, actualResult);
-    }
-
-    @Test
-    @DisplayName("Авторизация через кнопку \"Зарегистрироваться\" в Yandex Browser")
-    public void checkLoginByRegisterButtonYandex() {
-        driver = createDriver("yandex");
-        driver.get(url);
-        LoginAccount loginAccount = new LoginAccount(driver);
-        boolean actualResult = loginAccount.loginByRegisterButton(email, password);
-        assertEquals(true, actualResult);
-    }
-
-    @Test
-    @DisplayName("Авторизация через кнопку \"Восстановить пароль\" в Yandex Browser")
-    public void checkLoginByRecoveryButtonYandex() {
-        driver = createDriver("yandex");
-        driver.get(url);
-        LoginAccount loginAccount = new LoginAccount(driver);
-        boolean actualResult = loginAccount.loginByRecoveryButton(email, password);
-        assertEquals(true, actualResult);
-    }*/
 
     @After
     public void tearDown() {
